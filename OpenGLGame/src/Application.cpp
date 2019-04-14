@@ -19,7 +19,7 @@ int main(void)
 		return -1;
 	}
 
-	/* Make the window's context current */
+	/* Make the window's context curvrent */
 	glfwMakeContextCurrent(window);
 
 	// glad: load all OpenGL function pointers
