@@ -115,10 +115,18 @@ int main(void)
 	// Print OpenGL version
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
-	float positions[6] = {
-		-0.5f, -0.5f,
-		 0.0f,  0.5f,
-		 0.5f, -0.5f
+	float positions[] = {
+		-0.5f, -0.5f, // 0
+		 0.5f, -0.5f, // 1
+		 0.5f,  0.5f, // 2
+		-0.5f,  0.5f // 3
+	};
+
+	// index buffer to create square from two triangles
+	unsigned int indices[] =
+	{
+		0, 1, 2, // first triangle
+		2, 3, 0 // second triangle
 	};
 
 	unsigned int buffer;
@@ -127,12 +135,19 @@ int main(void)
 	// Binding (kind of making ait active) buffer
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	// Binding data with buffer
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 6  * 2 * sizeof(float), positions, GL_STATIC_DRAW);
 
 	// Creating vertex attribute array
 	glEnableVertexAttribArray(0);
 	// Sort of defining structure of our data (2 floats for vertex)
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
+
+	unsigned int ibo; // index buffer object
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	// Binding data with buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
 
 	ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
 	unsigned int shader = CreateShader(source.VertexSource, source.FragentSource);
@@ -145,7 +160,8 @@ int main(void)
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays to draw array
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
