@@ -129,12 +129,12 @@ int main(void)
 	glfwSwapInterval(1);
 
 	// glad: load all OpenGL function pointers
-	// ---------------------------------------
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
+	
 	// Print OpenGL version
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
@@ -142,7 +142,7 @@ int main(void)
 		-0.5f, -0.5f, // 0
 		 0.5f, -0.5f, // 1
 		 0.5f,  0.5f, // 2
-		-0.5f,  0.5f // 3
+		-0.5f,  0.5f  // 3
 	};
 
 	// index buffer to create square from two triangles
